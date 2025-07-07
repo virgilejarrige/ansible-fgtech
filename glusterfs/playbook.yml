@@ -1,0 +1,7 @@
+# glusterfs_from_source/playbook.yml
+---
+- name: 1. Build GlusterFS from Source
+  hosts: master
+  gather_facts: true
+  roles:
+    - glusterfs_build

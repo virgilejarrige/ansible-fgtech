@@ -1,0 +1,12 @@
+
+[master]
+ubuntu-1.home
+
+[nodes]
+48.home
+49.home
+50.home
+
+[all:vars]
+ansible_user=root
+ansible_ssh_private_key=/home/docke/.ssh/id_rsa
