@@ -1,0 +1,4 @@
+[almalinux_hosts]
+hosts-01 ansible_host=10.200.15.219 ansible_user=docke ansible_ssh_private_key=/home/docke/.ssh/id_rsa
+hosts-02 ansible_host=10.200.15.220 ansible_user=docke ansible_ssh_private_key=/home/docke/.ssh/id_rsa
+hosts-03 ansible_host=10.200.15.221 ansible_user=docke ansible_ssh_private_key=/home/docke/.ssh/id_rsa
