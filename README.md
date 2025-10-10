@@ -7,19 +7,21 @@ This guide provides instructions on how to create and work with Ansible playbook
 - Python 3.8 or higher
 - pip (Python package manager)
 
-## install docker
+## install docker on almalinux 9
 ```shell
 sudo dnf --refresh update
 sudo dnf upgrade
 sudo reboot
 sudo dnf -y install yum-utils
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-sudo dnf install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 sudo systemctl start docker 
 sudo systemctl enable  docker 
 sudo systemctl status  docker 
 sudo docker version
 sudo usermod -aG docker $USER
+echo fs.inotify.max_user_instances = 256 | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
 # close pycharm 
 docker ps
 ```
@@ -27,7 +29,7 @@ docker ps
 ## Build and Run
 Docker containers that uses for Ansible role and playbook testing.
 ```shell
-git clone  https://github.com/crunchy-devops/ansible-fgtech.gi
+git clone  https://github.com/crunchy-devops/ansible-fgtech.git
 cd ansible-fgtech
 ```
 

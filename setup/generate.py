@@ -5,7 +5,7 @@ import os
 import time  # Import the time module
 
 # --- Configuration ---
-NUM_CONTAINERS = 25
+NUM_CONTAINERS = 5
 IMAGE_NAME = "docker-systemd:almalinux-9"
 BASE_NAME_TEMPLATE = "systemd-{}"
 HOSTNAME_TEMPLATE = "{}.home"

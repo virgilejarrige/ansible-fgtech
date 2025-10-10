@@ -1,0 +1,43 @@
+# Utilise l'image de base AlmaLinux 9
+FROM almalinux:9
+
+# Étape 1 : Installer OpenSSH Server, sudo, et les outils nécessaires pour systemd
+RUN dnf -y update && dnf -y install \
+    openssh-server \
+    sudo \
+    passwd \
+    openssl \
+    hostname \
+    iproute \
+    && dnf clean all
+
+# Étape 2 : Créer l'utilisateur 'alma' et définir le mot de passe
+# 'chpasswd' est utilisé pour définir le mot de passe de manière non interactive
+RUN useradd -m alma && echo "alma:12345678" | chpasswd && \
+    echo "alma ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/alma
+
+# Étape 3 : Configurer le serveur SSH
+# Autoriser la connexion SSH pour l'utilisateur root et l'utilisateur 'alma'
+RUN mkdir /var/run/sshd && sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -i 's/#UseDNS yes/UseDNS no/' /etc/ssh/sshd_config
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+# Étape 4 : Activer systemd et configurer le conteneur pour le lancer
+# Le conteneur doit être lancé avec '--privileged' pour que systemd fonctionne
+# Il faut également configurer l'entrée du conteneur pour lancer systemd directement
+ENV container docker
+RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ "$i" == \
+'systemd-tmpfiles-setup.service' ] || rm -f "$i"; done); \
+rm -f /lib/systemd/system/multi-user.target.wants/*;\
+rm -f /etc/systemd/system/*.wants/*;\
+rm -f /lib/systemd/system/local-fs.target.wants/*; \
+rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+rm -f /lib/systemd/system/basic.target.wants/*;\
+rm -f /lib/systemd/system/anaconda.target.wants/*;
+
+VOLUME [ "/sys/fs/cgroup" ]
+CMD ["/usr/sbin/init"]
+
+# Étape 5 : Exposer le port SSH
+EXPOSE 22
