@@ -13,7 +13,7 @@
       # On s'assure que l'interpréteur est bien Python 2.7 (le défaut de CentOS 7)
       # et que la gestion des facts fonctionne.
 
-    - name: 2. Tester un module d'Ansible Core 2.9 (Exemple : ansible.builtin.file)
+    - name: 2. Tester un module d'Ansible Core 2.9 (Exemple ansible.builtin.file)
       ansible.builtin.file:
         path: /tmp/ee_test_core_module
         state: touch
@@ -23,7 +23,7 @@
       # Vérifie que les modules de base (core) de l'Ansible 2.9.13 sont accessibles et fonctionnent
       # correctement sur l'hôte cible.
 
-    - name: 3. (Tâche Clé EE) : Tester une Collection externe (Exemple : community.general.ini)
+    - name: 3. (Tâche Clé EE) Tester une Collection externe (Exemple community.general.ini)
       # NOTE : Remplacez 'community.general' par la collection spécifique que votre EE est censé inclure.
       # L'EE doit obligatoirement avoir cette collection installée.
       community.general.ini_file:
