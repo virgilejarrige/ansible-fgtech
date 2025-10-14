@@ -92,8 +92,8 @@ verifier:
 - Build the image with `Ubuntu 24.04`
 
   ```bash
-export DISTR='ubuntu'
-export VERSION='24.04'
+export DISTR='centos'
+export VERSION='7'
 docker build -t docker-systemd:${DISTR}-${VERSION} -f ${DISTR}/${VERSION}.Dockerfile .
   ```
 
