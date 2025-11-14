@@ -1,17 +1,26 @@
 [centos7]
 3.home
 
+[centos7-remote]
+4.home
 
 [alma10]
 2.home
+
+[centos7-remote:vars]
+environment_name=development
+ansible_ssh_user=alma
+private_key_file=/home/alma/.ssh/id_rsa
+ansible_python_interpreter=/usr/bin/python
+
 
 [alma10:vars]
 environment_name=development
 ansible_ssh_user=ansible
 private_key_file=/home/alma/.ssh/id_rsa
-ansible_python_interpreter=/usr/bin/python3.12
+ansible_python_interpreter=/usr/bin/python3
 [centos7:vars]
 environment_name=development
 ansible_ssh_user=ansible
 private_key_file=/home/alma/.ssh/id_rsa
-ansible_python_interpreter=/usr/bin/python3
+ansible_python_interpreter=/usr/bin/python

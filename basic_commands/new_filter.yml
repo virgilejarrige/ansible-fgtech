@@ -2,6 +2,7 @@
 - hosts: all
   become: true
   vars:
+    # lookup prend les valeurs sur ansible_controleur
     user_data: "{{ lookup('file', '/etc/motd') }}"
   tasks:
     - name: cat file

@@ -8,32 +8,36 @@
   tasks:
     - name: Activer et collecter les facts uniquement pour les hôtes NON-centos7
       ansible.builtin.setup:
-      when: "'centos7' not in group_names"
+      when:
+        -  '"centos7" not in group_names'
+        -  '"centos7-remote" not in group_names'
 
     - name: Utiliser une variable de Fact
       ansible.builtin.debug:
         # Ceci fonctionnera uniquement pour les hôtes où la collecte a eu lieu (NON-centos7)
         msg: "OS de l'hôte {{ inventory_hostname }} : {{ ansible_distribution }}"
         # Conditionnel à la collecte des facts
-      when: "'centos7' not in group_names"
+      when:
+        - '"centos7" not in group_names'
+        - '"centos7-remote" not in group_names'
 
     - name: Tâche pour le groupe centos7 (sans facts)
-      ansible.builtin.raw: git clone https://github.com/crunchy-devops/essai_ansible_pull.git /opt/essai_ansible_pull
+      ansible.builtin.raw: /usr/bin/centos_ansible.py https://github.com/crunchy-devops/essai_ansible_pull.git /opt/app_config -b main
       register: python_raw_output
-      when: "'centos7' in group_names"
+      when: "'centos7' and 'centos7-remote' in group_names"
     - name: Afficher le résultat de l'exécution (si la tâche a été jouée)
       ansible.builtin.debug:
           msg: "Sortie du script Python sur {{ inventory_hostname }} : {{ python_raw_output.stdout }}"
       when:
-        - "'centos7' in group_names"
+        - "'centos7' and 'centos7-remote' in group_names"
         - python_raw_output.stdout is defined and python_raw_output.stdout | length > 0
     - name: Playbook sur centos7
-      ansible.builtin.raw: ansible-playbook create_file.yml
+      ansible.builtin.raw: cd /opt/app_config && ansible-playbook create_file.yml
       register: python_raw_output
-      when: "'centos7' in group_names"
+      when: "'centos7' and 'centos7-remote' in group_names"
     - name: Afficher le résultat de l'exécution (si la tâche a été jouée)
       ansible.builtin.debug:
         msg: "Sortie du script Python sur {{ inventory_hostname }} : {{ python_raw_output.stdout }}"
       when:
-        - "'centos7' in group_names"
+        - "'centos7' and 'centos7-remote' in group_names"
         - python_raw_output.stdout is defined and python_raw_output.stdout | length > 0

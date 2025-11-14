@@ -2,6 +2,7 @@
 # resolved : https://bugzilla.redhat.com/show_bug.cgi?id=1539142
 #
 - hosts: all,!local
+  # creation des user , sauf sur le local cad ansible-controleur
   become: true
   vars:
     myuser: justin
@@ -27,19 +28,21 @@
         group: "{{ myuser}}"
         state: touch
         mode: '0600'
-- hosts: slave
+- hosts: alma10
   become: true
   vars:
     myuser: justin
   tasks:
     - name: create ssh key on admin user {{ myuser }}
-      delegate_to: target1
+      # creation de la cle sur centos
+      delegate_to: 3.home
       openssh_keypair:
         path: "/home/{{myuser}}/.ssh/id_rsa"
         owner: "{{ myuser }}"
         group: "{{ myuser }}"
       register: ssh_key
     - name: add public key
+      # deployee la cle sur almalinux10
       lineinfile:
         path: "/home/{{ myuser }}/.ssh/authorized_keys"
         state: present

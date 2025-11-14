@@ -1,5 +1,4 @@
 ---
-
 - name: Test Ping simple
   hosts: all, !local
   tasks:

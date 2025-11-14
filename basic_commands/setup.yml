@@ -1,5 +1,5 @@
 ---
-- hosts: centos
+- hosts: all
   tasks:
     - name : setup
       setup:
