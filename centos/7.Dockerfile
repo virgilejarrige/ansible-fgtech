@@ -18,7 +18,14 @@ RUN INSTALL_PKGS='findutils initscripts iproute git openssh-client epel-release 
     && yum makecache fast && yum update -y \
     && yum clean all
 
-RUN yum install -y ansible
+RUN yum install -y ansible && localedef -i en_US -f UTF-8 en_US.UTF-8
+
+RUN rpm -Uvh https://repo.zabbix.com/zabbix/7.4/release/rhel/7/noarch/zabbix-release-latest-7.4.el7.noarch.rpm \
+    && yum install -y zabbix-sender zabbix-agent
+
+RUN yum groupinstall -y "Development tools"
+
+RUN yum install -y python2-pip python2-devel cronie
 
 RUN useradd -m ansible && echo "ansible:12345678" | chpasswd && \
     echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \

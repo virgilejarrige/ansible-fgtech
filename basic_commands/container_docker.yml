@@ -5,7 +5,7 @@
   gather_facts: false
 
   vars:
-    container_name: centos7_test_node
+    container_name: mycentos
     # Définir l'interpréteur Python pour les cibles CentOS 7 (Python 2)
     #ansible_python_interpreter: /usr/bin/python
 
@@ -13,7 +13,7 @@
     - name: 1. S'assurer que le conteneur CentOS 7 est démarré
       community.docker.docker_container:
         name: "{{ container_name }}"
-        image: centos:7
+        image: docker-systemd:centos-7
         state: started
         # Ajout des dépendances minimales si l'image est trop légère
         command: /bin/bash -c "yum install -y python-minimal && /bin/bash"
@@ -29,7 +29,7 @@
       when: container_state.changed
 
     - name: 3. Exécuter une commande à l'intérieur du conteneur via connexion 'docker'
-      ansible.builtin.command: cat /etc/os-release
+      ansible.builtin.raw: cat /etc/os-release
       # CRITIQUE : Changer l'hôte pour cibler le conteneur, et le type de connexion
       delegate_to: "{{ container_name }}"
       vars:

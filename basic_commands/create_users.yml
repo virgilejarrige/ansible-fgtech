@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: alma10
   become: true
   gather_facts: no
   vars:

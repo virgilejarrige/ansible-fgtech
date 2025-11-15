@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: alma10
   tasks: 
    - name:  print stdout
      command: echo " Hello there"

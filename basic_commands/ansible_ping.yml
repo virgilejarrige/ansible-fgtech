@@ -1,6 +1,7 @@
 ---
 - name: Test Ping simple
   hosts: all, !local
+  gather_facts: no
   tasks:
     - name: Test module ping
       ping:

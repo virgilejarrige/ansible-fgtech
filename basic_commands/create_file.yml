@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: alma10
   tasks:
     - name: create file
       file: state=touch path=/home/{{ansible_ssh_user}}/hostname.conf

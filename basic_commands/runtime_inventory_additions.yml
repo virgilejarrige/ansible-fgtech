@@ -1,5 +1,5 @@
 ---
-- hosts: target1
+- hosts: 1.home
   tasks:
   - name: get a token
     command: openssl genrsa -out Dev.key 2048
@@ -16,7 +16,7 @@
        hash:  "{{ my_hash.stdout }}"
        ip_address: "192.168.1.106"
 
-- hosts: target2
+- hosts: 2.home
   tasks:
     - name: if exist delete file
       file: path=/tmp/values state=absent
