@@ -1,0 +1,61 @@
+---
+- name: TP Gestion Avancee des Erreurs
+  hosts: all
+  gather_facts: yes
+  become: yes
+  vars:
+    # Simule un utilisateur/package inexistant pour forcer l'echec
+    invalid_package: "non_existent_package_xyz"
+    expected_version: 1.0.0
+
+  tasks:
+    # =========================================================================
+    # A. Tache 1: Utilisation de REGISTER pour Capturer l'Echec
+    # =========================================================================
+    - name: Tentative d'execution d'une commande qui echoue (Code RC != 0)
+      ansible.builtin.shell: /bin/false
+      register: false_command
+      # On force un echec mais on n'arrete pas le playbook immediatement
+      ignore_errors: true
+
+    # =========================================================================
+    # B. Tache 2: Gestion d'un Echec (FAIL) et Ignorer l'Echec Global
+    # =========================================================================
+    - name: Tache qui doit echouer si le systeme n'est pas Linux
+      ansible.builtin.fail:
+        msg: "Ce playbook est reserve aux systemes Linux. Distribution : {{ ansible_distribution }}"
+      when: ansible_facts['os_family'] != "Debian" and ansible_facts['os_family'] != "RedHat"
+      ignore_errors: true # On autorise l'echec si un autre OS et on continue
+
+    # =========================================================================
+    # C. Tache 3: Utilisation de ASSERT pour la Validation
+    # =========================================================================
+    - name: Verifier si le code de retour RC est 0 (doit echouer)
+      ansible.builtin.assert:
+        that:
+          # On teste si le code de retour de la tache 1 est egal a 0 (Faux!)
+          - false_command.rc == 0
+        fail_msg: "ERREUR: La commande /bin/false a retourne un code de retour non-zero (rc: {{ false_command.rc }})."
+        success_msg: "SUCCES: La commande a reussi (rc: 0)."
+      ignore_errors: true # On ignore cet echec d'assertion pour continuer le TP
+
+    # =========================================================================
+    # D. Tache 4: Garantir l'Idempotence (changed_when)
+    # =========================================================================
+    - name: Executer une commande non idempotente (toujours 'changed')
+      ansible.builtin.command: echo "Running non-idempotent check"
+      register: non_idempotent_task
+
+    - name: Rendre la tache non idempotente idempotente (grace a changed_when)
+      ansible.builtin.command: echo "Running check"
+      register: idempotent_task
+      # changed_when: false force Ansible a considerer la tache comme 'ok' si rc=0
+      changed_when: non_idempotent_task.stdout != "Running non-idempotent check"
+
+    # =========================================================================
+    # E. Tache 5: Utilisation d'un code de retour pour le WHEN
+    # =========================================================================
+    - name: Executer cette tache seulement si la Tache 1 a echoue
+      ansible.builtin.debug:
+        msg: "Tache de recuperation: La tache precedente a echoue (rc: {{ false_command.rc }}). Reprise en cours..."
+      when: false_command.rc != 0

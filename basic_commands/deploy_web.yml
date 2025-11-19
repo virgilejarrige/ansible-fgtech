@@ -1,0 +1,33 @@
+---
+- name: Configuration de Base du Serveur Web
+  hosts: 1.home # Remplacez par votre groupe d'inventaire de test
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: Installation des packages requis (Apache)
+      ansible.builtin.package:
+        name: httpd
+        state: present
+      tags:
+        - install
+        - initial # Tag global pour la premiere configuration
+
+    - name: S'assurer que le service Apache est demarre et actif
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes
+      tags:
+        - service
+        - initial
+
+    - name: Deploiement du fichier index.html par defaut
+      ansible.builtin.copy:
+        content: "Bienvenue sur le serveur web de test!"
+        dest: /var/www/html/index.html
+        owner: apache
+        group: apache
+        mode: '0644'
+      tags:
+        - config
