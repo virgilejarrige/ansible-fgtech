@@ -1,0 +1,19 @@
+---
+- hosts: alma10
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Tester la présence du fichier /home/ansible/test et le créer si absent
+      ansible.builtin.file:
+        path: /home/ansible/test
+        state: absent
+
+    - name: Vérifier la présence du fichier /home/ansible/test
+      ansible.builtin.stat:
+        path: /home/ansible/test
+      register: fichier_test
+
+    - name: Afficher le résultat
+      debug:
+        msg: "Le fichier existe"
+      when: fichier_test.stat.exists

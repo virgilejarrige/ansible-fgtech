@@ -5,9 +5,9 @@
   # creation des user , sauf sur le local cad ansible-controleur
   become: true
   vars:
-    myuser: justin
+    myuser: bridou
   tasks:
-    - name: add user justin
+    - name: add user bridou
       user:
         name: "{{ myuser }}"
         shell: /bin/bash
@@ -31,11 +31,11 @@
 - hosts: alma10
   become: true
   vars:
-    myuser: justin
+    myuser: bridou
   tasks:
     - name: create ssh key on admin user {{ myuser }}
-      # creation de la cle sur centos
-      delegate_to: 3.home
+      # creation de la cle sur 1.home
+      delegate_to: 1.home
       openssh_keypair:
         path: "/home/{{myuser}}/.ssh/id_rsa"
         owner: "{{ myuser }}"

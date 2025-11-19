@@ -11,4 +11,4 @@
         password: "{{ password | password_hash('sha512') }}"
         groups: wheel
         state: present
-
+        update_password: on_create

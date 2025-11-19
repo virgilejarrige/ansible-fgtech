@@ -1,5 +1,5 @@
 ---
-- hosts: 3.home
+- hosts: 1.home
   tasks:
   - name: get a token
     ansible.builtin.command: openssl genrsa -out Dev.key 2048
@@ -16,12 +16,12 @@
        hash:  "{{ my_hash.stdout }}"
        ip_address: "192.168.1.106"
 
-- hosts: 4.home
+- hosts: 2.home
   tasks:
     - name: if exist delete file
       ansible.builtin.file: path=/tmp/values state=absent
     - name: create a file
-      file: path=/tmp/values state=touch
+      ansible.builtin.file: path=/tmp/values state=touch
     - name: add values
       ansible.builtin.blockinfile:
         path: /tmp/values

@@ -3,8 +3,8 @@
   hosts: all
   become: true
   vars:
-      text_message: " see {{ hostvars['target1']['ansible_host'] }}"
-      my_name: "Herve"
+      text_message: "{{ ansible_host }}"
+      my_name: "Virgile"
   tasks:
     - name: copy template file
       template:
