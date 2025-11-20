@@ -1,0 +1,17 @@
+---
+# Variables for Ubuntu 24
+postgresql_packages:
+  - postgresql
+  - postgresql-contrib
+
+postgresql_python_library: python3-psycopg2
+
+postgresql_daemon: postgresql
+postgresql_bin_path: /usr/bin
+postgresql_data_dir: /var/lib/postgresql/16/main
+postgresql_config_path: /etc/postgresql/16/main
+postgresql_init_path: /usr/lib/postgresql/16/bin
+
+postgresql_admin_user: postgres
+postgresql_user: postgres
+postgresql_group: postgres

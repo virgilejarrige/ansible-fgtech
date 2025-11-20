@@ -1,0 +1,10 @@
+---
+- name: Install the package manager to install postgresql
+  ansible.builtin.package:
+    name: "{{ postgresql_packages }}"
+    state: present
+    
+- name: Use the package python-library to get package facts
+  ansible.builtin.package:
+    name: "{{ postgresql_python_library }}"
+    state: present

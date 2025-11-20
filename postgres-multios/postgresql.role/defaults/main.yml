@@ -1,0 +1,16 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for postgresql.role
+postgresql_enablerepo: ""
+
+postgresql_restarted_state: "restarted"
+
+postgresql_user: postgres
+postgresql_group: postgres
+
+postgresql_service_state: started
+postgresql_service_enabled: true
+
+postgresql_users_no_log: true
+
+postgresql_users: []

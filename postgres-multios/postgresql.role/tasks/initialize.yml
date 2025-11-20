@@ -1,0 +1,32 @@
+---
+- name: Set PostgreSQL environment variables
+  template:
+    src: postgres.sh.j2
+    dest: /etc/profile.d/postgresql.sh
+    mode: '0644'
+  notify: restart postgresql service
+
+- name: Check if the PostgreSQL data directory exists
+  file:
+    path: "{{ postgresql_data_dir }}"
+    owner: "{{ postgresql_user }}"
+    group: "{{ postgresql_group }}"
+    state: directory
+    mode: '0700'
+
+- name: CHeck if PostgreSQL is already initialized
+  stat:
+    path: "{{ postgresql_data_dir }}/PG_VERSION"
+  register: pgdata_dir_version
+  tags:
+    - db_init
+
+- name: Ensure PostgreSQL is initialized (RedHat family)
+  command: "{{ postgresql_init_path }}/initdb -D {{ postgresql_data_dir }}"
+  when: 
+    - not pgdata_dir_version.stat.exists
+    - ansible_os_family == "RedHat"
+  become: true
+  become_user: "{{ postgresql_user }}"
+  tags:
+    - db_init

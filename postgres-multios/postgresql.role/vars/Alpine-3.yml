@@ -1,0 +1,17 @@
+---
+# Variables for Alpine 3
+postgresql_packages:
+  - postgresql
+  - postgresql-contrib
+
+postgresql_python_library: py3-psycopg2
+
+postgresql_daemon: postgresql
+postgresql_bin_path: /usr/bin
+postgresql_data_dir: /var/lib/postgresql/data
+postgresql_config_path: /var/lib/postgresql/data
+postgresql_init_path: /usr/bin
+
+postgresql_admin_user: postgres
+postgresql_user: postgres
+postgresql_group: postgres
