@@ -1,7 +1,9 @@
 #SPDX-License-Identifier: MIT-0
 galaxy_info:
+  role_name: postgresql
+  namespace: ansible_fgtech
   author: your name
-  description: your role description
+  description: PostgreSQL installation role for multi-OS support
   company: your company (optional)
 
   # If the issue tracker for your role is not on github, uncomment the

@@ -1,0 +1,28 @@
+---
+- name: Verify
+  hosts: all
+  become: yes
+  gather_facts: no
+
+  tasks:
+    - name: "Verifier que PostgreSQL est installe"
+      command: psql --version
+      register: psql_version
+      changed_when: false
+
+    - name: "Afficher la version PostgreSQL"
+      debug:
+        var: psql_version.stdout
+
+    - name: "Verifier que le service PostgreSQL est actif"
+      systemd:
+        name: postgresql
+        state: started
+      check_mode: yes
+      register: svc_status
+
+    - name: "Affirmer que le service est demarre"
+      assert:
+        that:
+          - not svc_status.changed
+        msg: "Le service postgresql n'etait pas demarre."
